@@ -139,14 +139,25 @@
         }
 
         /* 内容/链接样式 */
+        
         .item-content {
             font-family: var(--font-main);
             font-size: 1.1rem;
             color: #555;
             line-height: 1.6;
-            max-width: 80%;
-            text-align: center; 
+            
+            /* 核心修复代码 */
+            width: 100%;          /* 宽度占满容器 */
+            max-width: 80%;       /* 但最大不超过 80% */
+            text-align: center;   /* 文字内部居中 */
+            margin: 0 auto;       /* 【关键】让盒子本身在父元素里左右居中 */
+            
+            /* 额外的美化 */
+            display: block;
         }
+
+
+
         
         /* 如果是链接，显示的按钮样式 */
         a.link-btn {
