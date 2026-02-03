@@ -10,13 +10,11 @@
 
     <style>
         :root {
-            /* 保持你喜欢的配色 */
             --bg-color: #FDF9EE;       
             --header-color: #B59393;   
             --shape-bg: #D9D9D9;       
             --text-main: #222222;
             --dot-color: #50612E; 
-            
             --font-main: "Josefin Sans", sans-serif;
             --font-serif: "Georgia", serif;
         }
@@ -30,7 +28,6 @@
             font-family: var(--font-main);
         }
 
-        /* --- 页面容器 --- */
         .page-view {
             width: 100%;
             height: 100%;
@@ -40,7 +37,7 @@
             position: absolute;
             top: 0; left: 0;
             transition: opacity 0.3s;
-            overflow-y: auto; /* 允许内容过多时滚动 */
+            overflow-y: auto;
         }
         
         .hidden-view {
@@ -96,7 +93,6 @@
         .circle-shape { width: 150px; height: 150px; border-radius: 50%; }
         .label { font-size: 1.3rem; pointer-events: none; font-weight: 400; }
 
-        /* 修改：Footer Bar 变为可点击 */
         .footer-bar {
             width: 90%;
             height: 40px;
@@ -104,18 +100,16 @@
             position: relative;
             margin-bottom: 30px;
             z-index: 1;
-            cursor: pointer; /* 变为手型 */
+            cursor: pointer;
             transition: background-color 0.3s;
         }
-        .footer-bar:hover {
-            background-color: #D6D6D6;
-        }
+        .footer-bar:hover { background-color: #D6D6D6; }
         .noise-dot {
             width: 15px;
             height: 15px;
             background-color: var(--dot-color);
             position: absolute;
-            pointer-events: none; /* 防止点到点上没反应 */
+            pointer-events: none;
         }
 
         /* --- Scene 2: STILL (展示页) --- */
@@ -123,7 +117,7 @@
             justify-content: center;
             padding: 40px;
             box-sizing: border-box;
-            overflow: hidden; /* 这一页不需要滚动，居中显示 */
+            overflow: hidden;
         }
         
         .content-box {
@@ -170,12 +164,11 @@
         }
         a.link-btn:hover { background-color: var(--dot-color); color: white; }
 
-        /* 新增：Still 页面的操作区容器 */
         .still-actions-container {
             margin-top: 50px;
             display: flex;
             align-items: center;
-            gap: 20px; /* 按钮和圆圈的间距 */
+            gap: 20px; 
         }
 
         .still-actions button {
@@ -189,30 +182,30 @@
         }
         .still-actions button:hover { background: var(--text-main); color: white; }
 
-        /* 新增：圆形打勾按钮 */
-        .check-circle-btn {
+        /* 按钮通用样式 */
+        .action-shape-btn {
             width: 42px;
             height: 42px;
-            border-radius: 50%;
-            background-color: #E6E6E6; /* 浅灰底 */
+            background-color: #E6E6E6; 
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
-        .check-circle-btn:hover {
-            background-color: #CCC;
-            transform: scale(1.05);
-        }
-        .check-circle-btn:active {
-            transform: scale(0.95);
-        }
-        /* 选中状态的动画效果（虽然按下去就切换了，但可以留着做过渡） */
-        .check-circle-btn.checked {
-            background-color: var(--dot-color);
+        .action-shape-btn:hover { background-color: #CCC; transform: scale(1.05); }
+        .action-shape-btn:active { transform: scale(0.95); }
+
+        /* 圆形按钮 (Done) */
+        .check-circle-btn {
+            border-radius: 50%;
         }
 
+        /* 方形按钮 (Keep) */
+        .check-square-btn {
+            border-radius: 6px; /* 稍微倒一点角，不那么锐利 */
+        }
 
         /* --- Scene 3: FLOW (输入页) --- */
         #flow-page { justify-content: center; background-color: #F2F2F2; }
@@ -277,8 +270,8 @@
         /* --- Scene 4: ARCHIVE (归档列表页) --- */
         #archive-page {
             background-color: #FDFDFD;
-            padding-top: 80px; /* 给返回按钮留空间 */
-            justify-content: flex-start; /* 顶对齐 */
+            padding-top: 80px; 
+            justify-content: flex-start; 
         }
         
         .archive-list {
@@ -296,6 +289,7 @@
             padding: 15px;
             border-bottom: 1px solid #EEE;
             transition: all 0.2s;
+            position: relative;
         }
 
         .archive-item-title {
@@ -303,27 +297,36 @@
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 5px;
+            padding-right: 40px; /* 给计数留位置 */
         }
         .archive-item-content {
             font-size: 0.9rem;
             color: #666;
-            word-break: break-all; /* 防止长链接撑破 */
+            word-break: break-all; 
+            padding-right: 40px;
         }
 
-        /* 核心逻辑：划掉的样式 */
+        /* 状态样式 */
         .archive-item.done .archive-item-title,
         .archive-item.done .archive-item-content {
             text-decoration: line-through;
-            color: #AAA; /* 变淡 */
-        }
-        .archive-item-status {
-            font-size: 0.7rem;
-            color: #CCC;
-            margin-top: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #AAA; 
         }
 
+        /* 计数器显示 */
+        .count-badge {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--dot-color);
+            border: 1px solid var(--dot-color);
+            padding: 2px 8px;
+            border-radius: 12px;
+            opacity: 0.8;
+        }
+        .count-badge.hidden { display: none; }
 
         @keyframes floatUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -341,7 +344,7 @@
                 <div class="circle-shape" onclick="goToFlow()"><div class="label">flow</div></div>
             </div>
         </div>
-        <div class="footer-bar" onclick="goToArchive()" title="View Archive">
+        <div class="footer-bar" onclick="goToArchive()" title="View Reservoir">
             <div class="noise-dot" style="left: 10%; bottom: 5px;"></div>
             <div class="noise-dot" style="left: 25%; top: -5px;"></div>
             <div class="noise-dot" style="left: 42%; top: 8px;"></div>
@@ -360,14 +363,14 @@
                 <div class="still-actions">
                     <button onclick="renderRandomItem()">Next Light</button>
                 </div>
-                <div class="check-circle-btn" onclick="markAsDone()" title="Mark as Done"></div>
+                <div class="action-shape-btn check-circle-btn" onclick="markAsDone()" title="Done & Archive (Remove from pool)"></div>
+                <div class="action-shape-btn check-square-btn" onclick="markAsKeep()" title="Keep & Count (Stay in pool)"></div>
             </div>
         </div>
     </div>
 
     <div id="flow-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Cancel</div>
-        
         <div class="input-container">
             <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off">
             <input type="text" id="new-content" class="input-content" placeholder="Link or Thought..." onkeypress="handleEnter(event)" autocomplete="off">
@@ -378,17 +381,16 @@
     <div id="archive-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Back Home</div>
         <div class="slogan-area" style="margin-bottom: 30px;">Reservoir & Traces</div>
-        <div class="archive-list" id="archive-list-container">
-            </div>
+        <div class="archive-list" id="archive-list-container"></div>
     </div>
 
     <script>
         // --- 数据逻辑 ---
+        // 新增属性: completionCount (默认0)
         let flowItems = JSON.parse(localStorage.getItem('stillflow_data')) || [
-            { type: 'text', title: 'Example', content: "Spilled orange juice all over the table.", completed: false }
+            { type: 'text', title: 'Welcome', content: "This is your first drop of light.", completed: false, completionCount: 0 }
         ];
 
-        // 记录当前正在 Still 页面显示的这条数据在数组中的索引
         let currentShowingIndex = -1;
 
         // --- 时间 ---
@@ -401,20 +403,19 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // --- 路由 ---
         function switchScene(sceneId) {
             document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden-view'));
             document.getElementById(sceneId).classList.remove('hidden-view');
         }
         function goHome() { switchScene('home-page'); }
 
-        // --- Still 功能 (核心修改) ---
+        // --- Still 功能 ---
         function goToStill() {
-            // 过滤出未完成的项目
+            // 只从“未标记删除”的池子里选
             const activeItems = flowItems.filter(item => !item.completed);
             
             if (activeItems.length === 0) {
-                alert("All lights have been collected. Check the footer bar for history.");
+                alert("All lights have been fully collected. Check the Reservoir.");
                 return;
             }
             switchScene('still-page');
@@ -426,39 +427,26 @@
             displayArea.style.opacity = 0;
             
             setTimeout(() => {
-                // 1. 找出所有 "未完成 (completed != true)" 的项目的索引
-                // 我们需要存储原始索引，以便修改原数组
                 const activeIndices = [];
                 flowItems.forEach((item, index) => {
-                    if (!item.completed) {
-                        activeIndices.push(index);
-                    }
+                    if (!item.completed) activeIndices.push(index);
                 });
 
                 if (activeIndices.length === 0) {
-                    displayArea.innerHTML = `<div class="item-title">All clear.</div><div class="item-content">You have viewed everything.</div>`;
+                    displayArea.innerHTML = `<div class="item-title">All clear.</div>`;
                     displayArea.style.opacity = 1;
                     currentShowingIndex = -1;
                     return;
                 }
 
-                // 2. 随机取一个索引
                 const randomIndex = Math.floor(Math.random() * activeIndices.length);
                 currentShowingIndex = activeIndices[randomIndex];
                 const item = flowItems[currentShowingIndex];
                 
-                // 3. 渲染内容
                 let html = '';
-                let title = '';
-                let content = '';
+                let title = item.title || '';
+                let content = item.content || (typeof item === 'string' ? item : '');
                 
-                if (typeof item === 'string') {
-                    content = item; // 兼容旧数据
-                } else {
-                    title = item.title || ''; 
-                    content = item.content;
-                }
-
                 const isLink = content.includes('http');
 
                 if (title) html += `<h2 class="item-title">${title}</h2>`;
@@ -478,36 +466,48 @@
             }, 200);
         }
 
-        // --- 新功能：标记为已读 ---
+        // --- 核心功能：圆形 (Done) ---
         function markAsDone() {
             if (currentShowingIndex === -1) return;
+            
+            updateItemState(currentShowingIndex, { completed: true });
+            
+            animateButton('.check-circle-btn');
+        }
 
-            // 1. 修改数据
-            if (typeof flowItems[currentShowingIndex] === 'string') {
-                // 如果是旧数据（字符串），转成对象
-                flowItems[currentShowingIndex] = {
-                    content: flowItems[currentShowingIndex],
-                    completed: true
-                };
-            } else {
-                flowItems[currentShowingIndex].completed = true;
+        // --- 核心功能：方形 (Keep & Count) ---
+        function markAsKeep() {
+            if (currentShowingIndex === -1) return;
+
+            let currentCount = flowItems[currentShowingIndex].completionCount || 0;
+            updateItemState(currentShowingIndex, { completionCount: currentCount + 1 });
+            
+            animateButton('.check-square-btn');
+        }
+
+        function updateItemState(index, updates) {
+            // 兼容旧数据，确保是对象
+            if (typeof flowItems[index] === 'string') {
+                flowItems[index] = { content: flowItems[index], completed: false, completionCount: 0 };
             }
-
-            // 2. 保存
+            
+            // 合并更新
+            flowItems[index] = { ...flowItems[index], ...updates };
+            
             localStorage.setItem('stillflow_data', JSON.stringify(flowItems));
+        }
 
-            // 3. 视觉反馈 (可选：比如圆圈变色闪一下)
-            const btn = document.querySelector('.check-circle-btn');
+        function animateButton(selector) {
+            const btn = document.querySelector(selector);
             btn.style.backgroundColor = 'var(--dot-color)';
             
             setTimeout(() => {
-                btn.style.backgroundColor = '#E6E6E6'; // 恢复颜色
-                // 4. 自动切到下一条
-                renderRandomItem();
+                btn.style.backgroundColor = '#E6E6E6';
+                renderRandomItem(); // 动作完成后自动切下一条
             }, 300);
         }
 
-        // --- Flow 功能 (保存) ---
+        // --- Flow 功能 ---
         function goToFlow() {
             switchScene('flow-page');
             document.getElementById('new-title').value = '';
@@ -516,60 +516,51 @@
         }
 
         function saveItem() {
-            const titleInput = document.getElementById('new-title');
-            const contentInput = document.getElementById('new-content');
-            
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
+            const title = document.getElementById('new-title').value.trim();
+            const content = document.getElementById('new-content').value.trim();
             
             if (content) {
-                const newItem = {
+                flowItems.push({
                     title: title,
                     content: content,
-                    completed: false, // 默认为未读
+                    completed: false,
+                    completionCount: 0,
                     createdAt: new Date().toISOString()
-                };
-                
-                flowItems.push(newItem);
+                });
                 localStorage.setItem('stillflow_data', JSON.stringify(flowItems));
-                
                 goHome(); 
             }
         }
+        function handleEnter(e) { if(e.key === 'Enter') saveItem(); }
 
-        function handleEnter(e) {
-            if(e.key === 'Enter') saveItem();
-        }
-
-        // --- Archive 功能 (归档页面) ---
+        // --- Archive 功能 ---
         function goToArchive() {
             switchScene('archive-page');
             const container = document.getElementById('archive-list-container');
             container.innerHTML = '';
-
-            // 倒序排列，最新的在上面
+            
             const reversedItems = [...flowItems].reverse();
 
             if (reversedItems.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#999;">Nothing here yet.</div>';
+                container.innerHTML = '<div style="text-align:center; color:#999;">Empty.</div>';
                 return;
             }
 
             reversedItems.forEach(item => {
-                let title = '';
-                let content = '';
-                let isDone = false;
-
-                if (typeof item === 'string') {
-                    content = item;
-                } else {
-                    title = item.title || '';
-                    content = item.content;
-                    isDone = item.completed === true;
-                }
+                let title = item.title || '';
+                let content = item.content || (typeof item === 'string' ? item : '');
+                let isDone = item.completed === true;
+                let count = item.completionCount || 0;
 
                 const doneClass = isDone ? 'done' : '';
                 const displayTitle = title ? title : 'Untitled';
+                
+                // 如果是Done状态，也可以显示曾经看过的次数，如果count>0的话
+                // 如果是Keep状态，显示count
+                let countBadge = '';
+                if (count > 0) {
+                    countBadge = `<div class="count-badge">↻ ${count}</div>`;
+                }
                 
                 const div = document.createElement('div');
                 div.className = `archive-item ${doneClass}`;
@@ -577,7 +568,7 @@
                 div.innerHTML = `
                     <div class="archive-item-title">${displayTitle}</div>
                     <div class="archive-item-content">${content}</div>
-                    ${isDone ? '<div class="archive-item-status">Archived</div>' : ''}
+                    ${countBadge}
                 `;
                 container.appendChild(div);
             });
