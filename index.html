@@ -372,7 +372,7 @@
     <div id="flow-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Cancel</div>
         <div class="input-container">
-            <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off">
+            <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off" onkeypress="handleEnter(event)">
             <input type="text" id="new-content" class="input-content" placeholder="Link or Thought..." onkeypress="handleEnter(event)" autocomplete="off">
             <button class="save-btn" onclick="saveItem()">Save to Reservoir</button>
         </div>
@@ -427,38 +427,42 @@
             displayArea.style.opacity = 0;
             
             setTimeout(() => {
-                const activeIndices = [];
-                flowItems.forEach((item, index) => {
-                    if (!item.completed) activeIndices.push(index);
-                });
-
-                if (activeIndices.length === 0) {
-                    displayArea.innerHTML = `<div class="item-title">All clear.</div>`;
-                    displayArea.style.opacity = 1;
-                    currentShowingIndex = -1;
-                    return;
-                }
-
-                const randomIndex = Math.floor(Math.random() * activeIndices.length);
-                currentShowingIndex = activeIndices[randomIndex];
-                const item = flowItems[currentShowingIndex];
+                const item = flowItems[Math.floor(Math.random() * flowItems.length)];
                 
                 let html = '';
-                let title = item.title || '';
-                let content = item.content || (typeof item === 'string' ? item : '');
+                let title = '';
+                let content = '';
                 
+                // 1. 数据兼容处理
+                if (typeof item === 'string') {
+                    content = item;
+                } else {
+                    title = item.title || ''; 
+                    content = item.content || ''; // 确保如果是 null 也能变空字符串
+                }
+
                 const isLink = content.includes('http');
 
-                if (title) html += `<h2 class="item-title">${title}</h2>`;
+                // 2. 渲染标题 (如果有)
+                if (title) {
+                    html += `<h2 class="item-title">${title}</h2>`;
+                }
 
-                if (isLink) {
-                    if (title) {
-                        html += `<a href="${content}" target="_blank" class="link-btn">Open Link ↗</a>`;
+                // 3. 渲染内容 (如果有才渲染)
+                if (content) {
+                    if (isLink) {
+                        // 如果有链接
+                        const btnText = title ? "Open Link ↗" : content;
+                        html += `<a href="${content}" target="_blank" class="link-btn">${btnText}</a>`;
                     } else {
-                        html += `<a href="${content}" target="_blank" class="link-btn" style="border:none; text-decoration:underline;">${content}</a>`;
+                        // 如果是纯文本内容
+                        html += `<div class="item-content">${content}</div>`;
                     }
-                } else {
-                    html += `<div class="item-content">${content}</div>`;
+                }
+                
+                // 如果既没标题也没内容（极少数情况），显示个占位符
+                if (!title && !content) {
+                    html += `<div class="item-content" style="color:#ccc;">(Empty Memory)</div>`;
                 }
 
                 displayArea.innerHTML = html;
@@ -516,21 +520,37 @@
         }
 
         function saveItem() {
-            const title = document.getElementById('new-title').value.trim();
-            const content = document.getElementById('new-content').value.trim();
+            const titleInput = document.getElementById('new-title');
+            const contentInput = document.getElementById('new-content');
             
-            if (content) {
-                flowItems.push({
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            
+            // 修改点：原来是 if (content)，现在改为 if (title || content)
+            // 只要两者中有一个不为空，就允许保存
+            if (title || content) {
+                const newItem = {
                     title: title,
-                    content: content,
-                    completed: false,
-                    completionCount: 0,
+                    content: content, // 这里允许为空字符串
                     createdAt: new Date().toISOString()
-                });
+                };
+                
+                flowItems.push(newItem);
                 localStorage.setItem('stillflow_data', JSON.stringify(flowItems));
+                
+                // 存完清空输入框，防止下次进来还有残留
+                titleInput.value = '';
+                contentInput.value = '';
+                
                 goHome(); 
+            } else {
+                // 如果两个都空，提示一下用户
+                alert("Please enter a title or content.");
             }
         }
+        
+
+
         function handleEnter(e) { if(e.key === 'Enter') saveItem(); }
 
         // --- Archive 功能 ---
