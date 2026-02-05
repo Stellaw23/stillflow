@@ -32,393 +32,143 @@
             font-family: var(--font-main);
         }
 
-        /* --- NEW ADDITION: Breathing Overlay --- */
+        /* --- 1. Breathing Intro & Self-Check Overlay --- */
         #intro-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-color: var(--bg-color);
-            z-index: 9999; /* 最高层级 */
+            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            transition: opacity 1.5s ease; /* 退出时的淡出时长 */
+            transition: opacity 1.5s ease;
         }
 
         .intro-text {
             font-family: var(--font-serif);
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--dot-color);
-            opacity: 0; /* 初始隐藏 */
+            opacity: 0;
             font-weight: bold;
             letter-spacing: 2px;
-            transition: color 0.3s;
+            transition: all 0.5s;
         }
 
-        /* 呼吸动画 */
-        @keyframes inhale-anim {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1.3); opacity: 1; }
-        }
+        /* 4-7-8 Animations */
+        @keyframes inhale-anim { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1.4); opacity: 1; } }
+        @keyframes hold-anim   { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.4); opacity: 1; } }
+        @keyframes exhale-anim { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.0); opacity: 0.2; } }
 
-        @keyframes exhale-anim {
-            0% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(1.0); opacity: 0.7; }
-        }
+        .anim-4-inhale { animation: inhale-anim 4s ease-out forwards; }
+        .anim-7-hold   { animation: hold-anim 7s linear forwards; }
+        .anim-8-exhale { animation: exhale-anim 8s ease-in-out forwards; }
 
-        /* 动画类 */
-        .anim-inhale {
-            animation: inhale-anim 3.5s ease-out forwards;
-        }
-
-        .anim-exhale {
-            animation: exhale-anim 3.5s ease-in-out forwards;
-        }
-
-        /* 进入按钮样式 */
-        .enter-btn {
-            font-size: 1.5rem;
-            cursor: pointer;
-            border-bottom: 1px solid transparent;
-            opacity: 1;
-            transform: scale(1);
-            animation: fadeIn 1s ease forwards;
-        }
-        .enter-btn:hover {
-            border-bottom: 1px solid var(--dot-color);
-            letter-spacing: 4px;
-            transition: all 0.4s;
-        }
-
-        /* 隐藏辅助类 */
-        .fade-out {
-            opacity: 0 !important;
-            pointer-events: none;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        /* --- END NEW ADDITION --- */
-
-
-        .page-view {
-            width: 100%;
-            height: 100%;
-            display: flex;
+        /* Self-Check Menu */
+        #intention-menu {
+            display: none;
             flex-direction: column;
-            align-items: center;
-            position: absolute;
-            top: 0; left: 0;
+            gap: 20px;
+            text-align: center;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .menu-question {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .intention-btn {
+            background: transparent;
+            border: 1px solid var(--text-main);
+            padding: 12px 30px;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+        .intention-btn:hover { background: var(--text-main); color: white; letter-spacing: 1px; }
+        
+        /* 离开模式 */
+        .sleep-mode-msg {
+            display: none;
+            font-size: 2rem;
+            color: var(--header-color);
+            font-family: var(--font-serif);
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .fade-out { opacity: 0 !important; pointer-events: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Global Layout --- */
+        .page-view {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            position: absolute; top: 0; left: 0;
             transition: opacity 0.3s;
             overflow-y: auto;
         }
-        
-        .hidden-view {
-            display: none !important;
-            opacity: 0;
-            pointer-events: none;
-        }
+        .hidden-view { display: none !important; opacity: 0; pointer-events: none; }
 
-        /* --- Scene 1: HOME --- */
-        .top-bar-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            position: relative;
-            margin-top: 30px;
-        }
-
-        .top-bar {
-            background-color: var(--header-color);
-            color: white; 
-            min-width: 180px;
-            padding: 6px 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            border-radius: 2px;
-            font-weight: 300;
-        }
-
-        /* 登录状态按钮样式 */
-        .auth-status {
-            position: absolute;
-            right: 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-decoration: underline;
-            color: var(--text-main);
-            opacity: 0.7;
-        }
-        .auth-status:hover { opacity: 1; }
-
-        .slogan-area {
-            margin-top: 40px;
-            font-size: 1.4rem;
-            text-align: center;
-            font-weight: 300;
-        }
-
-        .stage {
-            flex: 1; 
-            display: flex;
-            gap: 60px; 
-            align-items: center; 
-            justify-content: center;
-            width: 100%;
-            position: relative;
-            z-index: 10;
-        }
-
-        .rect-shape, .circle-shape {
-            background-color: var(--shape-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
+        /* --- Scene: HOME --- */
+        .top-bar-container { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 30px; position: relative; }
+        .top-bar { background-color: var(--header-color); color: white; min-width: 180px; padding: 6px 20px; text-align: center; font-size: 0.9rem; letter-spacing: 1px; border-radius: 2px; font-weight: 300; }
+        .auth-status { position: absolute; right: 20px; font-size: 0.8rem; cursor: pointer; text-decoration: underline; color: var(--text-main); opacity: 0.7; }
+        .slogan-area { margin-top: 40px; font-size: 1.4rem; text-align: center; font-weight: 300; }
+        .stage { flex: 1; display: flex; gap: 60px; align-items: center; justify-content: center; width: 100%; }
+        .rect-shape, .circle-shape { background-color: var(--shape-bg); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.2s, background-color 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .rect-shape:hover, .circle-shape:hover { transform: scale(1.02); background-color: #CFCFCF; }
         .rect-shape { width: 150px; height: 210px; }
         .circle-shape { width: 150px; height: 150px; border-radius: 50%; }
         .label { font-size: 1.3rem; pointer-events: none; font-weight: 400; }
-
-        .footer-bar {
-            width: 90%;
-            height: 40px;
-            background-color: #E6E6E6; 
-            position: relative;
-            margin-bottom: 30px;
-            z-index: 1;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+        .footer-bar { width: 90%; height: 40px; background-color: #E6E6E6; margin-bottom: 30px; position: relative; cursor: pointer; }
         .footer-bar:hover { background-color: #D6D6D6; }
-        .noise-dot {
-            width: 15px;
-            height: 15px;
-            background-color: var(--dot-color);
-            position: absolute;
-            pointer-events: none;
-        }
+        .noise-dot { width: 15px; height: 15px; background-color: var(--dot-color); position: absolute; pointer-events: none; }
 
-        /* --- Scene 2: STILL (展示页) --- */
-        #still-page {
-            justify-content: center;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-        
-        .content-box {
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            animation: floatUp 0.6s ease-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .item-title {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-main);
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        .item-content {
-            font-family: var(--font-main);
-            font-size: 1.1rem;
-            color: #555;
-            line-height: 1.6;
-            width: 100%;          
-            max-width: 80%;       
-            text-align: center;   
-            margin: 0 auto;       
-            display: block;
-        }
-
-        a.link-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: 1px solid var(--dot-color);
-            color: var(--dot-color);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
+        /* --- Scene: STILL (Display) --- */
+        #still-page { justify-content: center; padding: 40px; box-sizing: border-box; }
+        .content-box { max-width: 600px; width: 100%; text-align: center; animation: floatUp 0.6s ease-out; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .item-title { font-family: var(--font-serif); font-size: 2rem; font-weight: bold; color: var(--text-main); margin: 0; line-height: 1.3; }
+        .item-content { font-family: var(--font-main); font-size: 1.1rem; color: #555; line-height: 1.6; max-width: 80%; margin: 0 auto; }
+        a.link-btn { display: inline-block; margin-top: 10px; padding: 10px 20px; border: 1px solid var(--dot-color); color: var(--dot-color); text-decoration: none; border-radius: 4px; transition: 0.2s; }
         a.link-btn:hover { background-color: var(--dot-color); color: white; }
-
-        .still-actions-container {
-            margin-top: 50px;
-            display: flex;
-            align-items: center;
-            gap: 20px; 
-        }
-
-        .still-actions button {
-            background: transparent;
-            border: 1px solid var(--text-main);
-            padding: 10px 25px;
-            cursor: pointer;
-            font-family: var(--font-main);
-            transition: all 0.2s;
-            font-size: 1rem;
-        }
+        .still-actions-container { margin-top: 50px; display: flex; align-items: center; gap: 20px; }
+        .still-actions button { background: transparent; border: 1px solid var(--text-main); padding: 10px 25px; cursor: pointer; font-family: var(--font-main); transition: 0.2s; }
         .still-actions button:hover { background: var(--text-main); color: white; }
-
-        /* 按钮通用样式 */
-        .action-shape-btn {
-            width: 42px;
-            height: 42px;
-            background-color: #E6E6E6; 
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+        .action-shape-btn { width: 42px; height: 42px; background-color: #E6E6E6; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .action-shape-btn:hover { background-color: #CCC; transform: scale(1.05); }
-        .action-shape-btn:active { transform: scale(0.95); }
+        .check-circle-btn { border-radius: 50%; }
+        .check-square-btn { border-radius: 6px; }
+        .active-filter-badge { position: absolute; top: 80px; font-size: 0.8rem; color: var(--dot-color); border: 1px solid var(--dot-color); padding: 2px 8px; border-radius: 12px; opacity: 0.6; }
 
-        /* 圆形按钮 (Done) */
-        .check-circle-btn {
-            border-radius: 50%;
-        }
-
-        /* 方形按钮 (Keep) */
-        .check-square-btn {
-            border-radius: 6px; 
-        }
-
-        /* --- Scene 3: FLOW (输入页) --- */
+        /* --- Scene: FLOW (Input) --- */
         #flow-page { justify-content: center; background-color: #F2F2F2; }
+        .input-container { text-align: center; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 20px; }
+        .input-title { width: 100%; background: transparent; border: none; border-bottom: 2px solid #999; font-size: 1.5rem; padding: 10px 0; font-family: var(--font-serif); outline: none; font-weight: bold; }
+        .input-content { width: 100%; background: transparent; border: none; border-bottom: 1px solid #999; font-size: 1rem; padding: 10px 0; font-family: var(--font-main); outline: none; }
+        
+        /* Tag Selection */
+        .tag-selector { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        .tag-option { font-size: 0.9rem; padding: 5px 12px; border: 1px solid #999; border-radius: 20px; cursor: pointer; opacity: 0.6; transition: 0.2s; }
+        .tag-option.selected { background-color: var(--dot-color); color: white; border-color: var(--dot-color); opacity: 1; }
 
-        .input-container {
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px; 
-        }
-
-        .input-title {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #999;
-            font-size: 1.5rem;
-            padding: 10px 0;
-            font-family: var(--font-serif);
-            outline: none;
-            color: var(--text-main);
-            font-weight: bold;
-        }
-        .input-title::placeholder { color: #BBB; font-weight: normal; font-style: italic; }
-
-        .input-content {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #999;
-            font-size: 1rem;
-            padding: 10px 0;
-            font-family: var(--font-main);
-            outline: none;
-            color: var(--text-main);
-        }
-
-        .save-btn {
-            margin-top: 20px;
-            background-color: var(--dot-color);
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+        .save-btn { margin-top: 20px; background-color: var(--dot-color); color: white; border: none; padding: 12px 40px; font-size: 1rem; cursor: pointer; border-radius: 4px; }
         .save-btn:disabled { background-color: #999; cursor: not-allowed; }
-
-        .back-btn {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            opacity: 0.6;
-            z-index: 100;
-        }
+        .back-btn { position: absolute; top: 40px; left: 40px; cursor: pointer; font-size: 0.9rem; opacity: 0.6; z-index: 100; }
         .back-btn:hover { opacity: 1; text-decoration: underline; }
 
-        /* --- Scene 4: ARCHIVE (归档列表页) --- */
-        #archive-page {
-            background-color: #FDFDFD;
-            padding-top: 80px; 
-            justify-content: flex-start; 
-        }
-        
-        .archive-list {
-            width: 90%;
-            max-width: 700px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-bottom: 50px;
-        }
-
-        .archive-item {
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            border-bottom: 1px solid #EEE;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .archive-item-title {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            padding-right: 40px; 
-        }
-        .archive-item-content {
-            font-size: 0.9rem;
-            color: #666;
-            word-break: break-all; 
-            padding-right: 40px;
-        }
-
-        .archive-item.done .archive-item-title,
-        .archive-item.done .archive-item-content {
-            text-decoration: line-through;
-            color: #AAA; 
-        }
-
-        .count-badge {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            color: var(--dot-color);
-            border: 1px solid var(--dot-color);
-            padding: 2px 8px;
-            border-radius: 12px;
-            opacity: 0.8;
-        }
-        .count-badge.hidden { display: none; }
+        /* --- Scene: ARCHIVE --- */
+        #archive-page { background-color: #FDFDFD; padding-top: 80px; justify-content: flex-start; }
+        .archive-list { width: 90%; max-width: 700px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 50px; }
+        .archive-item { display: flex; flex-direction: column; padding: 15px; border-bottom: 1px solid #EEE; position: relative; }
+        .archive-item.done { opacity: 0.5; text-decoration: line-through; }
+        .count-badge { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; color: var(--dot-color); border: 1px solid var(--dot-color); padding: 2px 8px; border-radius: 12px; }
+        .tag-mark { font-size: 0.75rem; color: #999; margin-top: 4px; font-style: italic; }
 
         @keyframes floatUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -427,9 +177,19 @@
 
     <div id="intro-overlay">
         <div id="intro-text" class="intro-text"></div>
+        
+        <div id="intention-menu">
+            <div class="menu-question">How are you feeling? What do you need?</div>
+            <button class="intention-btn" onclick="enterApp('#mental-rest')">🧘 Mental Rest</button>
+            <button class="intention-btn" onclick="enterApp('#brainfood')">🧠 Brain Food</button>
+            <button class="intention-btn" onclick="enterApp('#random')">✨ Just Random</button>
+            <button class="intention-btn" style="border-color:#999; color:#666;" onclick="triggerSleepMode()">🛌 Move / Sleep</button>
+        </div>
+
+        <div id="sleep-msg" class="sleep-mode-msg">Good night.<br>Rest well.</div>
     </div>
 
-    <div id="home-page" class="page-view">
+    <div id="home-page" class="page-view hidden-view">
         <div class="top-bar-container">
             <div class="top-bar" id="date-display">Loading...</div>
             <div class="auth-status" id="auth-btn" onclick="toggleAuth()">Login</div>
@@ -456,6 +216,7 @@
 
     <div id="still-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Back</div>
+        <div id="active-filter-display" class="active-filter-badge"></div>
         <div class="content-box">
             <div id="display-area"></div>
             
@@ -472,8 +233,15 @@
     <div id="flow-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Cancel</div>
         <div class="input-container">
-            <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off" onkeypress="handleEnter(event)">
-            <input type="text" id="new-content" class="input-content" placeholder="Link or Thought..." onkeypress="handleEnter(event)" autocomplete="off">
+            <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off">
+            <input type="text" id="new-content" class="input-content" placeholder="Link or Thought..." autocomplete="off" onkeypress="handleEnter(event)">
+            
+            <div class="tag-selector">
+                <div class="tag-option selected" onclick="selectTag('#random', this)">#random</div>
+                <div class="tag-option" onclick="selectTag('#mental-rest', this)">#mental-rest</div>
+                <div class="tag-option" onclick="selectTag('#brainfood', this)">#brainfood</div>
+            </div>
+
             <button id="save-btn-el" class="save-btn" onclick="saveItem()">Save to Cloud</button>
         </div>
     </div>
@@ -485,7 +253,7 @@
     </div>
 
     <script>
-        // --- 1. Firebase 初始化 ---
+        // --- 1. Firebase Configuration (已保留) ---
         const firebaseConfig = {
             apiKey: "AIzaSyAW8UVmPhEKm42ZIS4iFdgu1uNHfizb0IU",
             authDomain: "still-flow-app.firebaseapp.com",
@@ -495,29 +263,24 @@
             appId: "1:824814346765:web:76b848945006ba26b56b44",
             measurementId: "G-V6DHX4NK4Y"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // --- 2. 全局状态 ---
+        // --- 2. Global State ---
         let currentUser = null;
         let flowItems = []; 
         let currentShowingIndex = -1;
+        let currentTagSelection = '#random'; // Input page selection
+        let currentSessionFilter = 'all';    // Session filter (from Intro)
 
-        // --- 3. 核心认证逻辑 ---
+        // --- 3. Auth & Data ---
         function toggleAuth() {
             if (currentUser) {
-                auth.signOut().then(() => {
-                    alert("Logged out.");
-                    location.reload(); 
-                });
+                auth.signOut().then(() => location.reload());
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                auth.signInWithPopup(provider).catch((error) => {
-                    console.error("Login failed:", error);
-                    alert("Login failed: " + error.message);
-                });
+                auth.signInWithPopup(provider).catch(e => alert(e.message));
             }
         }
 
@@ -530,107 +293,123 @@
             } else {
                 currentUser = null;
                 authBtn.innerText = "Login";
-                flowItems = []; 
+                flowItems = [];
                 document.getElementById('date-display').innerText = "Please Login";
             }
         });
 
-        // --- 4. 云端数据交互 ---
         function loadDataFromCloud() {
-            document.getElementById('date-display').innerText = "Loading Cloud...";
-            
-            db.collection('items')
-              .where("uid", "==", currentUser.uid) 
-              .get()
-              .then((querySnapshot) => {
-                  let cloudItems = [];
-                  querySnapshot.forEach((doc) => {
-                      let data = doc.data();
-                      data.id = doc.id; 
-                      cloudItems.push(data);
-                  });
-                  
-                  cloudItems.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
-                  
-                  flowItems = cloudItems;
-                  updateTime(); 
-                  console.log("Loaded items:", flowItems.length);
-              })
-              .catch((error) => {
-                  console.error("Error loading data:", error);
-                  document.getElementById('date-display').innerText = "Error!";
+            document.getElementById('date-display').innerText = "Loading...";
+            db.collection('items').where("uid", "==", currentUser.uid).get()
+              .then((snapshot) => {
+                  flowItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                  // Sort by date
+                  flowItems.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
+                  updateTime();
               });
         }
 
-        function saveItem() {
-            if (!currentUser) {
-                alert("Please login first!");
-                return;
-            }
-
-            const titleInput = document.getElementById('new-title');
-            const contentInput = document.getElementById('new-content');
-            const btn = document.getElementById('save-btn-el');
-
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
-
-            if (title || content) {
-                btn.innerText = "Saving...";
-                btn.disabled = true;
-
-                db.collection('items').add({
-                    uid: currentUser.uid,
-                    title: title,
-                    content: content,
-                    completed: false,
-                    completionCount: 0,
-                    createdAt: new Date().toISOString()
-                }).then((docRef) => {
-                    flowItems.push({
-                        id: docRef.id,
-                        uid: currentUser.uid,
-                        title: title,
-                        content: content,
-                        completed: false,
-                        completionCount: 0,
-                        createdAt: new Date().toISOString()
-                    });
-
-                    titleInput.value = '';
-                    contentInput.value = '';
-                    btn.innerText = "Save to Cloud";
-                    btn.disabled = false;
-                    goHome();
-                }).catch((error) => {
-                    alert("Error saving: " + error.message);
-                    btn.innerText = "Save to Cloud";
-                    btn.disabled = false;
-                });
-            } else {
-                alert("Please enter a title or content.");
-            }
+        // --- 4. Tagging & Saving Logic ---
+        function selectTag(tag, element) {
+            currentTagSelection = tag;
+            document.querySelectorAll('.tag-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
         }
 
-        function updateCloudItem(index, updates) {
-            const item = flowItems[index];
-            if (!item || !item.id) return;
+        function saveItem() {
+            if (!currentUser) return alert("Please login.");
+            const title = document.getElementById('new-title').value.trim();
+            const content = document.getElementById('new-content').value.trim();
 
-            flowItems[index] = { ...item, ...updates };
+            if (!title && !content) return alert("Empty content.");
 
-            db.collection('items').doc(item.id).update(updates).catch(err => {
-                console.error("Cloud update failed", err);
+            const btn = document.getElementById('save-btn-el');
+            btn.innerText = "Saving..."; btn.disabled = true;
+
+            const newItem = {
+                uid: currentUser.uid,
+                title, content,
+                tag: currentTagSelection, // Save the tag
+                completed: false, completionCount: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            db.collection('items').add(newItem).then((docRef) => {
+                newItem.id = docRef.id;
+                flowItems.push(newItem);
+                
+                // Reset Input
+                document.getElementById('new-title').value = '';
+                document.getElementById('new-content').value = '';
+                selectTag('#random', document.querySelectorAll('.tag-option')[0]); // Reset tag to random
+                
+                btn.innerText = "Save to Cloud"; btn.disabled = false;
+                goHome();
             });
         }
 
-        // --- 5. 页面逻辑 (View Logic) ---
-        
+        function handleEnter(e) { if(e.key === 'Enter') saveItem(); }
+
+        // --- 5. 4-7-8 Intro & Self Check Logic ---
+        function runIntroSequence() {
+            const textEl = document.getElementById('intro-text');
+            const menuEl = document.getElementById('intention-menu');
+            
+            // Phase 1: Inhale (4s)
+            textEl.innerText = "Inhale (4)";
+            textEl.className = "intro-text anim-4-inhale";
+
+            // Phase 2: Hold (7s) - starts after 4s
+            setTimeout(() => {
+                textEl.innerText = "Hold (7)";
+                textEl.className = "intro-text anim-7-hold";
+            }, 4000);
+
+            // Phase 3: Exhale (8s) - starts after 4+7 = 11s
+            setTimeout(() => {
+                textEl.innerText = "Exhale (8)";
+                textEl.className = "intro-text anim-8-exhale";
+            }, 11000);
+
+            // Phase 4: Show Menu - starts after 4+7+8 = 19s
+            setTimeout(() => {
+                textEl.style.display = 'none'; // Hide text
+                menuEl.style.display = 'flex'; // Show menu
+            }, 19000); 
+        }
+
+        // Enter App with a specific filter intention
+        function enterApp(filterTag) {
+            const overlay = document.getElementById('intro-overlay');
+            currentSessionFilter = filterTag; // Set global filter session
+            
+            overlay.classList.add('fade-out');
+            setTimeout(() => { 
+                overlay.style.display = 'none'; 
+                document.getElementById('home-page').classList.remove('hidden-view');
+            }, 1500);
+        }
+
+        // "Go to Sleep" mode
+        function triggerSleepMode() {
+            document.getElementById('intention-menu').style.display = 'none';
+            document.getElementById('sleep-msg').style.display = 'block';
+            // Optional: Close window after 3s (often blocked by browsers, but we can try)
+            setTimeout(() => {
+                window.close(); // Only works if script opened window
+                // If not, at least it stays on the dark goodnight screen
+            }, 3000);
+        }
+
+        window.addEventListener('load', runIntroSequence);
+
+
+        // --- 6. View & Navigation Logic ---
         function updateTime() {
-            if (!currentUser) return; 
+            if (!currentUser) return;
             const now = new Date();
-            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('date-display').innerText = `${dateStr} / ${timeStr}`;
+            document.getElementById('date-display').innerText = 
+                `${now.toLocaleDateString('en-US', {month:'short', day:'numeric'})} / ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
         }
         setInterval(updateTime, 1000);
 
@@ -641,39 +420,69 @@
         function goHome() { switchScene('home-page'); }
 
         function goToStill() {
-            if (!currentUser) { alert("Please login to view your lights."); return; }
+            if (!currentUser) return alert("Please login.");
             
-            const activeItems = flowItems.filter(item => !item.completed);
-            if (activeItems.length === 0) {
-                alert("All lights collected. Check Reservoir.");
+            // Check if we have items matching the session filter
+            let pool = flowItems.filter(item => !item.completed);
+            
+            // Apply Intentional Filter (if not random/all)
+            if (currentSessionFilter !== '#random' && currentSessionFilter !== 'all') {
+                pool = pool.filter(item => item.tag === currentSessionFilter);
+            }
+
+            if (pool.length === 0) {
+                // If filter is specific but empty, ask to show all?
+                if (currentSessionFilter !== 'all' && currentSessionFilter !== '#random') {
+                    if(confirm(`No lights found for ${currentSessionFilter}. Show random instead?`)) {
+                        currentSessionFilter = '#random'; // reset to random
+                        goToStill(); // retry
+                    }
+                    return;
+                }
+                alert("No lights collected yet.");
                 return;
             }
+
             switchScene('still-page');
+            
+            // Update UI to show what filter is active
+            const badge = document.getElementById('active-filter-display');
+            if (currentSessionFilter !== '#random' && currentSessionFilter !== 'all') {
+                badge.innerText = `Focus: ${currentSessionFilter}`;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+
             renderRandomItem();
         }
 
         function renderRandomItem() {
             const displayArea = document.getElementById('display-area');
             displayArea.style.opacity = 0;
-            
-            const activeIndices = flowItems
-                .map((item, idx) => item.completed ? -1 : idx)
-                .filter(idx => idx !== -1);
-
-            if (activeIndices.length === 0) {
-                goHome(); 
-                return;
-            }
 
             setTimeout(() => {
-                const randIndex = activeIndices[Math.floor(Math.random() * activeIndices.length)];
-                currentShowingIndex = randIndex; 
-                const item = flowItems[randIndex];
+                // Filter Logic inside render
+                let pool = flowItems.filter(item => !item.completed);
                 
+                if (currentSessionFilter !== '#random' && currentSessionFilter !== 'all') {
+                    pool = pool.filter(item => item.tag === currentSessionFilter);
+                }
+
+                if (pool.length === 0) { goHome(); return; }
+
+                const item = pool[Math.floor(Math.random() * pool.length)];
+                currentShowingIndex = flowItems.indexOf(item); // Find real index in main array
+
                 let html = '';
                 const isLink = item.content && item.content.includes('http');
 
                 if (item.title) html += `<h2 class="item-title">${item.title}</h2>`;
+                
+                // Show Tag
+                const tagDisplay = item.tag && item.tag !== '#random' ? `<div style="color:var(--dot-color); font-size:0.8rem; margin-top:5px;">${item.tag}</div>` : '';
+                html += tagDisplay;
+
                 if (item.content) {
                     if (isLink) {
                         const btnText = item.title ? "Open Link ↗" : item.content;
@@ -687,102 +496,56 @@
             }, 200);
         }
 
-        function markAsDone() {
-            if (currentShowingIndex === -1) return;
-            updateCloudItem(currentShowingIndex, { completed: true });
-            animateButton('.check-circle-btn');
-        }
-
-        function markAsKeep() {
-            if (currentShowingIndex === -1) return;
-            let currentCount = flowItems[currentShowingIndex].completionCount || 0;
-            updateCloudItem(currentShowingIndex, { completionCount: currentCount + 1 });
-            animateButton('.check-square-btn');
-        }
-
-        function animateButton(selector) {
-            const btn = document.querySelector(selector);
-            btn.style.backgroundColor = 'var(--dot-color)';
-            setTimeout(() => {
-                btn.style.backgroundColor = '#E6E6E6';
-                renderRandomItem(); 
-            }, 300);
-        }
-
         function goToFlow() {
-            if (!currentUser) { alert("Please login to save lights."); return; }
+            if (!currentUser) return alert("Please login.");
             switchScene('flow-page');
-            document.getElementById('new-title').value = '';
-            document.getElementById('new-content').value = '';
             setTimeout(() => document.getElementById('new-title').focus(), 100);
         }
 
-        function handleEnter(e) { if(e.key === 'Enter') saveItem(); }
-
         function goToArchive() {
-            if (!currentUser) { alert("Please login to view archive."); return; }
+            if (!currentUser) return alert("Please login.");
             switchScene('archive-page');
             const container = document.getElementById('archive-list-container');
             container.innerHTML = '';
             
-            const reversedItems = [...flowItems].reverse(); 
-
-            if (reversedItems.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#999;">Empty.</div>';
-                return;
-            }
-
-            reversedItems.forEach(item => {
-                const isDone = item.completed === true;
+            [...flowItems].reverse().forEach(item => {
                 const count = item.completionCount || 0;
-                let countBadge = count > 0 ? `<div class="count-badge">↻ ${count}</div>` : '';
+                const tagStr = item.tag ? item.tag : '';
                 
                 const div = document.createElement('div');
-                div.className = `archive-item ${isDone ? 'done' : ''}`;
+                div.className = `archive-item ${item.completed ? 'done' : ''}`;
                 div.innerHTML = `
                     <div class="archive-item-title">${item.title || 'Untitled'}</div>
                     <div class="archive-item-content">${item.content || ''}</div>
-                    ${countBadge}
+                    ${tagStr ? `<div class="tag-mark">${tagStr}</div>` : ''}
+                    ${count > 0 ? `<div class="count-badge">↻ ${count}</div>` : ''}
                 `;
                 container.appendChild(div);
             });
         }
 
-        // --- 6. Breathing Intro Logic (NEW) ---
-        function runIntroSequence() {
-            const textEl = document.getElementById('intro-text');
-            const overlay = document.getElementById('intro-overlay');
-            
-            // Phase A: Inhale
-            textEl.innerText = "Inhale";
-            textEl.classList.add('anim-inhale');
-            
-            // Phase B: Exhale (after 3.5s)
-            setTimeout(() => {
-                textEl.innerText = "Exhale";
-                textEl.classList.remove('anim-inhale');
-                textEl.classList.add('anim-exhale');
-            }, 3500);
-
-            // Phase C: Enter (after another 3.5s = 7s total)
-            setTimeout(() => {
-                textEl.classList.remove('anim-exhale');
-                textEl.innerText = "Enter";
-                textEl.classList.add('enter-btn'); // Add button styling
-                
-                // Add click event
-                textEl.onclick = () => {
-                    overlay.classList.add('fade-out');
-                    // Remove from DOM after fade out completes to unblock clicks permanently
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                    }, 1500);
-                };
-            }, 7000);
+        // Helper
+        function updateCloudItem(index, updates) {
+            const item = flowItems[index];
+            if (!item || !item.id) return;
+            flowItems[index] = { ...item, ...updates };
+            db.collection('items').doc(item.id).update(updates);
         }
-
-        // Run on load
-        window.addEventListener('load', runIntroSequence);
+        function markAsDone() {
+            if (currentShowingIndex === -1) return;
+            updateCloudItem(currentShowingIndex, { completed: true });
+            animateButton('.check-circle-btn');
+        }
+        function markAsKeep() {
+            if (currentShowingIndex === -1) return;
+            updateCloudItem(currentShowingIndex, { completionCount: (flowItems[currentShowingIndex].completionCount||0) + 1 });
+            animateButton('.check-square-btn');
+        }
+        function animateButton(sel) {
+            const btn = document.querySelector(sel);
+            btn.style.backgroundColor = 'var(--dot-color)';
+            setTimeout(() => { btn.style.backgroundColor = '#E6E6E6'; renderRandomItem(); }, 300);
+        }
 
     </script>
 </body>
