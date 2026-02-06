@@ -32,7 +32,7 @@
             font-family: var(--font-main);
         }
 
-        /* --- 1. Breathing Intro --- */
+        /* --- 1. Breathing Intro & Common Overlay --- */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); z-index: 9999;
@@ -40,6 +40,8 @@
             transition: opacity 1.5s ease;
         }
         .intro-text { font-family: var(--font-serif); font-size: 3rem; color: var(--dot-color); opacity: 0; font-weight: bold; letter-spacing: 2px; }
+        
+        /* Breathing Animations */
         @keyframes inhale-anim { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1.4); opacity: 1; } }
         @keyframes hold-anim   { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.4); opacity: 1; } }
         @keyframes exhale-anim { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.0); opacity: 0.2; } }
@@ -47,11 +49,54 @@
         .anim-7-hold   { animation: hold-anim 7s linear forwards; }
         .anim-8-exhale { animation: exhale-anim 8s ease-in-out forwards; }
 
+        /* Menu Styles */
         #intention-menu { display: none; flex-direction: column; gap: 20px; text-align: center; animation: fadeIn 1.5s ease forwards; }
         .menu-question { font-size: 1.2rem; color: #888; margin-bottom: 20px; font-style: italic; }
         .intention-btn { background: transparent; border: 1px solid var(--text-main); padding: 12px 30px; font-family: var(--font-main); font-size: 1.1rem; cursor: pointer; transition: 0.3s; min-width: 200px; }
         .intention-btn:hover { background: var(--text-main); color: white; letter-spacing: 1px; }
         .sleep-mode-msg { display: none; font-size: 2rem; color: var(--header-color); font-family: var(--font-serif); animation: fadeIn 2s ease forwards; }
+
+        /* ============================================================
+           === OPTIONAL MODULE: RELEASE METHOD (START CSS) ===
+           Delete this block if you want to remove the feature.
+        ============================================================ */
+        #release-container {
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .release-step-text {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            min-height: 150px; /* Prevent jumping */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .release-btn {
+            background-color: transparent;
+            border: 1px solid var(--dot-color);
+            color: var(--dot-color);
+            padding: 10px 30px;
+            border-radius: 20px;
+            font-family: var(--font-main);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .release-btn:hover { background-color: var(--dot-color); color: white; }
+        /* === OPTIONAL MODULE: RELEASE METHOD (END CSS) === */
+
+
         .fade-out { opacity: 0 !important; pointer-events: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -103,40 +148,22 @@
         .back-btn { position: absolute; top: 40px; left: 40px; cursor: pointer; font-size: 0.9rem; opacity: 0.6; z-index: 100; }
         .back-btn:hover { opacity: 1; text-decoration: underline; }
 
-        /* --- ARCHIVE (Enhanced) --- */
+        /* --- ARCHIVE --- */
         #archive-page { background-color: #FDFDFD; padding-top: 80px; justify-content: flex-start; }
-        
-        /* NEW: Archive Filter Bar */
-        .archive-filter-container {
-            display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;
-        }
-        .filter-pill {
-            font-size: 0.85rem; padding: 4px 12px; border: 1px solid #CCC; border-radius: 15px; cursor: pointer; color: #666; transition: 0.2s;
-        }
+        .archive-filter-container { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .filter-pill { font-size: 0.85rem; padding: 4px 12px; border: 1px solid #CCC; border-radius: 15px; cursor: pointer; color: #666; transition: 0.2s; }
         .filter-pill.active { background-color: var(--dot-color); color: white; border-color: var(--dot-color); }
-        
         .archive-list { width: 90%; max-width: 700px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; }
-        .archive-item { 
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            padding: 25px 20px; border-bottom: 1px solid #EEE; position: relative; gap: 8px;
-        }
+        .archive-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 25px 20px; border-bottom: 1px solid #EEE; position: relative; gap: 8px; }
         .archive-item.done { opacity: 0.5; }
         .archive-item.done .archive-item-title { text-decoration: line-through; }
         .archive-item-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: var(--text-main); margin: 0; }
         .archive-item-content { font-size: 0.95rem; color: #666; line-height: 1.5; max-width: 90%; }
-        
         a.archive-link-btn { display: inline-block; margin-top: 5px; padding: 6px 16px; border: 1px solid #DDD; background-color: #FFF; border-radius: 20px; color: var(--dot-color); text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
         a.archive-link-btn:hover { border-color: var(--dot-color); background-color: var(--dot-color); color: white; }
-
-        /* EDITABLE Tag Label */
-        .tag-mark-editable {
-            font-size: 0.75rem; color: #888; background-color: #F4F4F4;
-            padding: 3px 10px; border-radius: 10px; margin-top: 5px; letter-spacing: 0.5px;
-            cursor: pointer; user-select: none; transition: 0.2s;
-        }
+        .tag-mark-editable { font-size: 0.75rem; color: #888; background-color: #F4F4F4; padding: 3px 10px; border-radius: 10px; margin-top: 5px; letter-spacing: 0.5px; cursor: pointer; user-select: none; transition: 0.2s; }
         .tag-mark-editable:hover { background-color: #E0E0E0; color: #333; }
         .tag-mark-editable::after { content: " ✎"; font-size: 0.7em; opacity: 0.5; }
-
         .count-badge { position: absolute; right: 10px; top: 20px; font-size: 0.75rem; color: var(--dot-color); border: 1px solid var(--dot-color); padding: 2px 6px; border-radius: 12px; opacity: 0.5; }
 
         @keyframes floatUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -146,15 +173,24 @@
 
     <div id="intro-overlay">
         <div id="intro-text" class="intro-text"></div>
+        
         <div id="intention-menu">
             <div class="menu-question">How are you feeling? What do you need?</div>
-            <button class="intention-btn" onclick="enterApp('#mental-rest')">🧘 Mental Rest</button>
-            <button class="intention-btn" onclick="enterApp('#brainfood')">🧠 Brain Food</button>
-            <button class="intention-btn" onclick="enterApp('#random')">✨ Just Random</button>
-            <button class="intention-btn" style="border-color:#999; color:#666;" onclick="triggerSleepMode()">🛌 Move / Sleep</button>
+            <button class="intention-btn" onclick="enterApp('#mental-rest')">Mental Rest</button>
+            <button class="intention-btn" onclick="enterApp('#brainfood')">Brain Food</button>
+            <button class="intention-btn" onclick="enterApp('#random')">Just Random</button>
+            
+            <button class="intention-btn" style="border-color:#B59393; color:#B59393;" onclick="startReleaseMethod()">Let Go (Release)</button>
+            <button class="intention-btn" style="border-color:#999; color:#666;" onclick="triggerSleepMode()">Move / Sleep</button>
         </div>
+
         <div id="sleep-msg" class="sleep-mode-msg">Good night.<br>Rest well.</div>
-    </div>
+
+        <div id="release-container">
+            <div id="release-text" class="release-step-text"></div>
+            <button id="release-next-btn" class="release-btn" onclick="nextReleaseStep()">Next</button>
+        </div>
+        </div>
 
     <div id="home-page" class="page-view hidden-view">
         <div class="top-bar-container">
@@ -203,14 +239,12 @@
     <div id="archive-page" class="page-view hidden-view">
         <div class="back-btn" onclick="goHome()">← Back Home</div>
         <div class="slogan-area" style="margin-bottom: 20px;">Cloud Reservoir</div>
-        
         <div class="archive-filter-container">
             <div class="filter-pill active" onclick="setArchiveFilter('all', this)">All</div>
             <div class="filter-pill" onclick="setArchiveFilter('#mental-rest', this)">Mental</div>
             <div class="filter-pill" onclick="setArchiveFilter('#brainfood', this)">Brain</div>
             <div class="filter-pill" onclick="setArchiveFilter('#random', this)">Random</div>
         </div>
-
         <div class="archive-list" id="archive-list-container"></div>
     </div>
 
@@ -235,7 +269,7 @@
         let currentShowingIndex = -1;
         let currentTagSelection = '#random'; 
         let currentSessionFilter = 'all';    
-        let currentArchiveFilter = 'all'; // NEW: for archive page
+        let currentArchiveFilter = 'all';
 
         // --- 3. Auth & Data ---
         function toggleAuth() {
@@ -264,6 +298,7 @@
                   flowItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                   flowItems.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
                   updateTime();
+                  console.log("Loaded items:", flowItems.length);
               });
         }
 
@@ -324,6 +359,61 @@
             setTimeout(() => { window.close(); }, 3000);
         }
         window.addEventListener('load', runIntroSequence);
+
+
+        /* ============================================================
+           === OPTIONAL MODULE: RELEASE METHOD (START JS) ===
+           Delete this block to remove the logic.
+        ============================================================ */
+        const releaseSteps = [
+            "Step 1:<br>Focus on an issue that you would like to feel better about, and then allow yourself to feel whatever you are feeling in this moment.",
+            "Step 2:<br>Ask yourself one of the following three questions:<br><br>1. Could I let this feeling go?<br>2. Could I allow this feeling to be here?<br>3. Could I welcome this feeling?",
+            "Step 3:<br>No matter which question you started with, ask yourself this simple question:<br><br><b>Would I?</b><br><br>(In other words: Am I willing to let go?)",
+            "Step 4:<br>Ask yourself this simpler question:<br><br><b>When?</b>",
+            "Step 5:<br>Repeat the preceding four steps as often as needed until you feel free of that particular feeling."
+        ];
+        let currentReleaseStep = 0;
+
+        function startReleaseMethod() {
+            document.getElementById('intention-menu').style.display = 'none';
+            const container = document.getElementById('release-container');
+            container.style.display = 'flex';
+            currentReleaseStep = 0;
+            updateReleaseText();
+        }
+
+        function nextReleaseStep() {
+            currentReleaseStep++;
+            if (currentReleaseStep < releaseSteps.length) {
+                updateReleaseText();
+            } else {
+                // Done - go back to menu
+                document.getElementById('release-container').style.display = 'none';
+                document.getElementById('intention-menu').style.display = 'flex';
+                // Optional: alert or small thank you
+            }
+        }
+
+        function updateReleaseText() {
+            const textEl = document.getElementById('release-text');
+            const btnEl = document.getElementById('release-next-btn');
+            
+            // Simple fade effect
+            textEl.style.opacity = 0;
+            setTimeout(() => {
+                textEl.innerHTML = releaseSteps[currentReleaseStep];
+                textEl.style.opacity = 1;
+                
+                // Change button text on last step
+                if (currentReleaseStep === releaseSteps.length - 1) {
+                    btnEl.innerText = "Complete";
+                } else {
+                    btnEl.innerText = "Next";
+                }
+            }, 200);
+        }
+        /* === OPTIONAL MODULE: RELEASE METHOD (END JS) === */
+
 
         // --- 6. View & Navigation ---
         function updateTime() {
@@ -400,28 +490,19 @@
             currentArchiveFilter = tag;
             document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
             el.classList.add('active');
-            goToArchive(); // Re-render list
+            goToArchive(); 
         }
 
         function cycleTag(itemId) {
-            // Find item
             const index = flowItems.findIndex(i => i.id === itemId);
             if (index === -1) return;
             const item = flowItems[index];
-
-            // Cycle logic
             const tags = ['#random', '#mental-rest', '#brainfood'];
             let currentIdx = tags.indexOf(item.tag || '#random');
             let nextIdx = (currentIdx + 1) % tags.length;
             let nextTag = tags[nextIdx];
-
-            // Update Local
             item.tag = nextTag;
-            
-            // Update Cloud
             db.collection('items').doc(itemId).update({ tag: nextTag });
-
-            // Re-render
             goToArchive(); 
         }
 
@@ -431,7 +512,6 @@
             const container = document.getElementById('archive-list-container');
             container.innerHTML = '';
             
-            // Apply Filters
             let list = [...flowItems].reverse();
             if (currentArchiveFilter !== 'all') {
                 list = list.filter(item => (item.tag || '#random') === currentArchiveFilter);
@@ -464,7 +544,6 @@
             });
         }
 
-        // Helper
         function updateCloudItem(index, updates) {
             const item = flowItems[index];
             if (!item || !item.id) return;
