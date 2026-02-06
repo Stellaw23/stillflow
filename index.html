@@ -32,7 +32,7 @@
             font-family: var(--font-main);
         }
 
-        /* --- 1. Breathing Intro & Common Overlay --- */
+        /* --- Intro & Overlay --- */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); z-index: 9999;
@@ -41,7 +41,6 @@
         }
         .intro-text { font-family: var(--font-serif); font-size: 3rem; color: var(--dot-color); opacity: 0; font-weight: bold; letter-spacing: 2px; }
         
-        /* Breathing Animations */
         @keyframes inhale-anim { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1.4); opacity: 1; } }
         @keyframes hold-anim   { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.4); opacity: 1; } }
         @keyframes exhale-anim { from { transform: scale(1.4); opacity: 1; } to { transform: scale(1.0); opacity: 0.2; } }
@@ -49,58 +48,22 @@
         .anim-7-hold   { animation: hold-anim 7s linear forwards; }
         .anim-8-exhale { animation: exhale-anim 8s ease-in-out forwards; }
 
-        /* Menu Styles */
         #intention-menu { display: none; flex-direction: column; gap: 20px; text-align: center; animation: fadeIn 1.5s ease forwards; }
         .menu-question { font-size: 1.2rem; color: #888; margin-bottom: 20px; font-style: italic; }
         .intention-btn { background: transparent; border: 1px solid var(--text-main); padding: 12px 30px; font-family: var(--font-main); font-size: 1.1rem; cursor: pointer; transition: 0.3s; min-width: 200px; }
         .intention-btn:hover { background: var(--text-main); color: white; letter-spacing: 1px; }
         .sleep-mode-msg { display: none; font-size: 2rem; color: var(--header-color); font-family: var(--font-serif); animation: fadeIn 2s ease forwards; }
 
-        /* ============================================================
-           === OPTIONAL MODULE: RELEASE METHOD (START CSS) ===
-           Delete this block if you want to remove the feature.
-        ============================================================ */
-        #release-container {
-            display: none; /* Initially hidden */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 80%;
-            max-width: 600px;
-            animation: fadeIn 1s ease forwards;
-        }
-
-        .release-step-text {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            margin-bottom: 40px;
-            min-height: 150px; /* Prevent jumping */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .release-btn {
-            background-color: transparent;
-            border: 1px solid var(--dot-color);
-            color: var(--dot-color);
-            padding: 10px 30px;
-            border-radius: 20px;
-            font-family: var(--font-main);
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        /* RELEASE METHOD MODULE */
+        #release-container { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 80%; max-width: 600px; animation: fadeIn 1s ease forwards; }
+        .release-step-text { font-family: var(--font-serif); font-size: 1.4rem; line-height: 1.6; color: var(--text-main); margin-bottom: 40px; min-height: 150px; display: flex; align-items: center; justify-content: center; }
+        .release-btn { background-color: transparent; border: 1px solid var(--dot-color); color: var(--dot-color); padding: 10px 30px; border-radius: 20px; font-family: var(--font-main); cursor: pointer; transition: 0.2s; }
         .release-btn:hover { background-color: var(--dot-color); color: white; }
-        /* === OPTIONAL MODULE: RELEASE METHOD (END CSS) === */
-
 
         .fade-out { opacity: 0 !important; pointer-events: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Global Layout --- */
+        /* --- Layout --- */
         .page-view { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; position: absolute; top: 0; left: 0; transition: opacity 0.3s; overflow-y: auto; }
         .hidden-view { display: none !important; opacity: 0; pointer-events: none; }
 
@@ -119,14 +82,32 @@
         .footer-bar:hover { background-color: #D6D6D6; }
         .noise-dot { width: 15px; height: 15px; background-color: var(--dot-color); position: absolute; pointer-events: none; }
 
-        /* --- STILL --- */
+        /* --- STILL (Cinema Mode Updated) --- */
         #still-page { justify-content: center; padding: 40px; box-sizing: border-box; }
-        .content-box { max-width: 600px; width: 100%; text-align: center; animation: floatUp 0.6s ease-out; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .item-title { font-family: var(--font-serif); font-size: 2rem; font-weight: bold; color: var(--text-main); margin: 0; line-height: 1.3; }
+        .content-box { max-width: 700px; width: 100%; text-align: center; animation: floatUp 0.6s ease-out; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .item-title { font-family: var(--font-serif); font-size: 1.8rem; font-weight: bold; color: var(--text-main); margin: 0; line-height: 1.3; }
         .item-content { font-family: var(--font-main); font-size: 1.1rem; color: #555; line-height: 1.6; max-width: 80%; margin: 0 auto; }
+        
+        /* Video Embed Container */
+        .video-embed-container {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .video-embed-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
         a.link-btn { display: inline-block; margin-top: 10px; padding: 10px 20px; border: 1px solid var(--dot-color); color: var(--dot-color); text-decoration: none; border-radius: 4px; transition: 0.2s; }
         a.link-btn:hover { background-color: var(--dot-color); color: white; }
-        .still-actions-container { margin-top: 50px; display: flex; align-items: center; gap: 20px; }
+        
+        .still-actions-container { margin-top: 30px; display: flex; align-items: center; gap: 20px; }
         .still-actions button { background: transparent; border: 1px solid var(--text-main); padding: 10px 25px; cursor: pointer; font-family: var(--font-main); transition: 0.2s; }
         .still-actions button:hover { background: var(--text-main); color: white; }
         .action-shape-btn { width: 42px; height: 42px; background-color: #E6E6E6; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
@@ -135,15 +116,28 @@
         .check-square-btn { border-radius: 6px; }
         .active-filter-badge { position: absolute; top: 80px; font-size: 0.8rem; color: var(--dot-color); border: 1px solid var(--dot-color); padding: 2px 8px; border-radius: 12px; opacity: 0.6; }
 
-        /* --- FLOW --- */
+        /* --- FLOW (Safe Search Updated) --- */
         #flow-page { justify-content: center; background-color: #F2F2F2; }
-        .input-container { text-align: center; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 20px; }
+        .input-container { text-align: center; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 20px; }
         .input-title { width: 100%; background: transparent; border: none; border-bottom: 2px solid #999; font-size: 1.5rem; padding: 10px 0; font-family: var(--font-serif); outline: none; font-weight: bold; }
         .input-content { width: 100%; background: transparent; border: none; border-bottom: 1px solid #999; font-size: 1rem; padding: 10px 0; font-family: var(--font-main); outline: none; }
         .tag-selector { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
         .tag-option { font-size: 0.9rem; padding: 5px 12px; border: 1px solid #999; border-radius: 20px; cursor: pointer; opacity: 0.6; transition: 0.2s; }
         .tag-option.selected { background-color: var(--dot-color); color: white; border-color: var(--dot-color); opacity: 1; }
-        .save-btn { margin-top: 20px; background-color: var(--dot-color); color: white; border: none; padding: 12px 40px; font-size: 1rem; cursor: pointer; border-radius: 4px; }
+        
+        /* Safe Search Area */
+        .safe-search-area {
+            margin-top: 40px; border-top: 1px dashed #CCC; padding-top: 30px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .safe-search-label { font-size: 0.9rem; color: #888; font-style: italic; margin-bottom: 5px; }
+        .search-row { display: flex; gap: 10px; justify-content: center; }
+        .search-btn-mini {
+            border: 1px solid #BBB; background: white; color: #555; padding: 8px 15px; font-size: 0.85rem; cursor: pointer; border-radius: 4px; transition: 0.2s;
+        }
+        .search-btn-mini:hover { border-color: #555; background: #EEE; }
+
+        .save-btn { margin-top: 10px; background-color: var(--dot-color); color: white; border: none; padding: 12px 40px; font-size: 1rem; cursor: pointer; border-radius: 4px; }
         .save-btn:disabled { background-color: #999; cursor: not-allowed; }
         .back-btn { position: absolute; top: 40px; left: 40px; cursor: pointer; font-size: 0.9rem; opacity: 0.6; z-index: 100; }
         .back-btn:hover { opacity: 1; text-decoration: underline; }
@@ -173,7 +167,6 @@
 
     <div id="intro-overlay">
         <div id="intro-text" class="intro-text"></div>
-        
         <div id="intention-menu">
             <div class="menu-question">How are you feeling? What do you need?</div>
             <button class="intention-btn" onclick="enterApp('#mental-rest')">Mental Rest</button>
@@ -181,16 +174,16 @@
             <button class="intention-btn" onclick="enterApp('#random')">Just Random</button>
             
             <button class="intention-btn" style="border-color:#B59393; color:#B59393;" onclick="startReleaseMethod()">Let Go (Release)</button>
+            
             <button class="intention-btn" style="border-color:#999; color:#666;" onclick="triggerSleepMode()">Move / Sleep</button>
         </div>
-
         <div id="sleep-msg" class="sleep-mode-msg">Good night.<br>Rest well.</div>
-
+        
         <div id="release-container">
             <div id="release-text" class="release-step-text"></div>
             <button id="release-next-btn" class="release-btn" onclick="nextReleaseStep()">Next</button>
         </div>
-        </div>
+    </div>
 
     <div id="home-page" class="page-view hidden-view">
         <div class="top-bar-container">
@@ -226,13 +219,23 @@
         <div class="back-btn" onclick="goHome()">← Cancel</div>
         <div class="input-container">
             <input type="text" id="new-title" class="input-title" placeholder="Title (e.g. Movie Name)" autocomplete="off">
-            <input type="text" id="new-content" class="input-content" placeholder="Link or Thought..." autocomplete="off" onkeypress="handleEnter(event)">
+            <input type="text" id="new-content" class="input-content" placeholder="Link (Paste URL here)" autocomplete="off" onkeypress="handleEnter(event)">
+            
             <div class="tag-selector">
                 <div class="tag-option selected" onclick="selectTag('#random', this)">#random</div>
                 <div class="tag-option" onclick="selectTag('#mental-rest', this)">#mental-rest</div>
                 <div class="tag-option" onclick="selectTag('#brainfood', this)">#brainfood</div>
             </div>
+
             <button id="save-btn-el" class="save-btn" onclick="saveItem()">Save to Cloud</button>
+
+            <div class="safe-search-area">
+                <div class="safe-search-label">Need to find something? <br>Skip the feed, search safely:</div>
+                <div class="search-row">
+                    <button class="search-btn-mini" onclick="safeSearch('youtube')">Search YouTube ↗</button>
+                    <button class="search-btn-mini" onclick="safeSearch('bilibili')">Search Bilibili ↗</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -276,7 +279,6 @@
             if (currentUser) { auth.signOut().then(() => location.reload()); } 
             else { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e => alert(e.message)); }
         }
-
         auth.onAuthStateChanged((user) => {
             const authBtn = document.getElementById('auth-btn');
             if (user) {
@@ -284,13 +286,10 @@
                 authBtn.innerText = `Logout (${user.displayName.split(' ')[0]})`;
                 loadDataFromCloud(); 
             } else {
-                currentUser = null;
-                authBtn.innerText = "Login";
-                flowItems = [];
+                currentUser = null; authBtn.innerText = "Login"; flowItems = [];
                 document.getElementById('date-display').innerText = "Please Login";
             }
         });
-
         function loadDataFromCloud() {
             document.getElementById('date-display').innerText = "Loading...";
             db.collection('items').where("uid", "==", currentUser.uid).get()
@@ -298,11 +297,10 @@
                   flowItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                   flowItems.sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
                   updateTime();
-                  console.log("Loaded items:", flowItems.length);
               });
         }
 
-        // --- 4. Tagging & Saving ---
+        // --- 4. Tagging & Saving & SAFE SEARCH ---
         function selectTag(tag, element) {
             currentTagSelection = tag;
             document.querySelectorAll('.tag-option').forEach(el => el.classList.remove('selected'));
@@ -314,23 +312,15 @@
             const title = document.getElementById('new-title').value.trim();
             const content = document.getElementById('new-content').value.trim();
             if (!title && !content) return alert("Empty content.");
-
             const btn = document.getElementById('save-btn-el');
             btn.innerText = "Saving..."; btn.disabled = true;
-
             const newItem = {
-                uid: currentUser.uid,
-                title, content,
-                tag: currentTagSelection, 
-                completed: false, completionCount: 0,
-                createdAt: new Date().toISOString()
+                uid: currentUser.uid, title, content, tag: currentTagSelection, 
+                completed: false, completionCount: 0, createdAt: new Date().toISOString()
             };
-
             db.collection('items').add(newItem).then((docRef) => {
-                newItem.id = docRef.id;
-                flowItems.push(newItem);
-                document.getElementById('new-title').value = '';
-                document.getElementById('new-content').value = '';
+                newItem.id = docRef.id; flowItems.push(newItem);
+                document.getElementById('new-title').value = ''; document.getElementById('new-content').value = '';
                 selectTag('#random', document.querySelectorAll('.tag-option')[0]); 
                 btn.innerText = "Save to Cloud"; btn.disabled = false;
                 goHome();
@@ -338,7 +328,24 @@
         }
         function handleEnter(e) { if(e.key === 'Enter') saveItem(); }
 
-        // --- 5. Intro & Sessions ---
+        // Safe Search Function
+        function safeSearch(platform) {
+            const query = document.getElementById('new-title').value.trim(); 
+            if(!query) {
+                alert("Please type keywords in the 'Title' box first.");
+                document.getElementById('new-title').focus();
+                return;
+            }
+            let url = "";
+            if(platform === 'youtube') {
+                url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+            } else if (platform === 'bilibili') {
+                url = `https://search.bilibili.com/all?keyword=${encodeURIComponent(query)}`;
+            }
+            window.open(url, '_blank');
+        }
+
+        // --- 5. Intro & Release Module ---
         function runIntroSequence() {
             const textEl = document.getElementById('intro-text');
             const menuEl = document.getElementById('intention-menu');
@@ -360,11 +367,7 @@
         }
         window.addEventListener('load', runIntroSequence);
 
-
-        /* ============================================================
-           === OPTIONAL MODULE: RELEASE METHOD (START JS) ===
-           Delete this block to remove the logic.
-        ============================================================ */
+        // Release Method Logic
         const releaseSteps = [
             "Step 1:<br>Focus on an issue that you would like to feel better about, and then allow yourself to feel whatever you are feeling in this moment.",
             "Step 2:<br>Ask yourself one of the following three questions:<br><br>1. Could I let this feeling go?<br>2. Could I allow this feeling to be here?<br>3. Could I welcome this feeling?",
@@ -373,49 +376,29 @@
             "Step 5:<br>Repeat the preceding four steps as often as needed until you feel free of that particular feeling."
         ];
         let currentReleaseStep = 0;
-
         function startReleaseMethod() {
             document.getElementById('intention-menu').style.display = 'none';
             const container = document.getElementById('release-container');
             container.style.display = 'flex';
-            currentReleaseStep = 0;
-            updateReleaseText();
+            currentReleaseStep = 0; updateReleaseText();
         }
-
         function nextReleaseStep() {
             currentReleaseStep++;
-            if (currentReleaseStep < releaseSteps.length) {
-                updateReleaseText();
-            } else {
-                // Done - go back to menu
-                document.getElementById('release-container').style.display = 'none';
-                document.getElementById('intention-menu').style.display = 'flex';
-                // Optional: alert or small thank you
-            }
+            if (currentReleaseStep < releaseSteps.length) { updateReleaseText(); } 
+            else { document.getElementById('release-container').style.display = 'none'; document.getElementById('intention-menu').style.display = 'flex'; }
         }
-
         function updateReleaseText() {
             const textEl = document.getElementById('release-text');
             const btnEl = document.getElementById('release-next-btn');
-            
-            // Simple fade effect
             textEl.style.opacity = 0;
             setTimeout(() => {
                 textEl.innerHTML = releaseSteps[currentReleaseStep];
                 textEl.style.opacity = 1;
-                
-                // Change button text on last step
-                if (currentReleaseStep === releaseSteps.length - 1) {
-                    btnEl.innerText = "Complete";
-                } else {
-                    btnEl.innerText = "Next";
-                }
+                btnEl.innerText = (currentReleaseStep === releaseSteps.length - 1) ? "Complete" : "Next";
             }, 200);
         }
-        /* === OPTIONAL MODULE: RELEASE METHOD (END JS) === */
 
-
-        // --- 6. View & Navigation ---
+        // --- 6. View & Still (With EMBED) ---
         function updateTime() {
             if (!currentUser) return;
             const now = new Date();
@@ -437,9 +420,7 @@
             }
             if (pool.length === 0) {
                 if (currentSessionFilter !== 'all' && currentSessionFilter !== '#random') {
-                    if(confirm(`No lights found for ${currentSessionFilter}. Show random?`)) {
-                        currentSessionFilter = '#random'; goToStill();
-                    }
+                    if(confirm(`No lights found for ${currentSessionFilter}. Show random?`)) { currentSessionFilter = '#random'; goToStill(); }
                     return;
                 }
                 alert("No lights collected yet."); return;
@@ -450,6 +431,22 @@
                 badge.innerText = `Focus: ${currentSessionFilter}`; badge.style.display = 'block';
             } else { badge.style.display = 'none'; }
             renderRandomItem();
+        }
+
+        // Embed Helper
+        function getVideoEmbed(url) {
+            if (!url) return null;
+            // YouTube
+            const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+            if (ytMatch) {
+                return `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1" allowfullscreen allow="autoplay"></iframe></div>`;
+            }
+            // Bilibili
+            const bMatch = url.match(/bilibili\.com\/video\/(BV[\w]+)/);
+            if (bMatch) {
+                return `<div class="video-embed-container"><iframe src="//player.bilibili.com/player.html?bvid=${bMatch[1]}&page=1&high_quality=1" allowfullscreen></iframe></div>`;
+            }
+            return null;
         }
 
         function renderRandomItem() {
@@ -465,15 +462,21 @@
                 currentShowingIndex = flowItems.indexOf(item); 
                 
                 let html = '';
-                const isLink = item.content && (item.content.includes('http') || item.content.includes('www'));
                 if (item.title) html += `<h2 class="item-title">${item.title}</h2>`;
                 const tagDisplay = item.tag && item.tag !== '#random' ? `<div style="color:var(--dot-color); font-size:0.8rem; margin-top:5px;">${item.tag}</div>` : '';
                 html += tagDisplay;
+
                 if (item.content) {
-                    if (isLink) {
-                        const btnText = item.title ? "Open Link ↗" : item.content;
-                        html += `<a href="${item.content}" target="_blank" class="link-btn">${btnText}</a>`;
-                    } else { html += `<div class="item-content">${item.content}</div>`; }
+                    const embedHtml = getVideoEmbed(item.content);
+                    if (embedHtml) {
+                        html += embedHtml;
+                    } else {
+                        const isLink = item.content.includes('http') || item.content.includes('www');
+                        if (isLink) {
+                            const btnText = item.title ? "Open Link ↗" : item.content;
+                            html += `<a href="${item.content}" target="_blank" class="link-btn">${btnText}</a>`;
+                        } else { html += `<div class="item-content">${item.content}</div>`; }
+                    }
                 }
                 displayArea.innerHTML = html; displayArea.style.opacity = 1;
             }, 200);
@@ -485,55 +488,39 @@
             setTimeout(() => document.getElementById('new-title').focus(), 100);
         }
 
-        // --- NEW ARCHIVE LOGIC ---
+        // --- Archive & Helpers ---
         function setArchiveFilter(tag, el) {
             currentArchiveFilter = tag;
             document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
             el.classList.add('active');
             goToArchive(); 
         }
-
         function cycleTag(itemId) {
             const index = flowItems.findIndex(i => i.id === itemId);
             if (index === -1) return;
             const item = flowItems[index];
             const tags = ['#random', '#mental-rest', '#brainfood'];
             let currentIdx = tags.indexOf(item.tag || '#random');
-            let nextIdx = (currentIdx + 1) % tags.length;
-            let nextTag = tags[nextIdx];
+            let nextTag = tags[(currentIdx + 1) % tags.length];
             item.tag = nextTag;
             db.collection('items').doc(itemId).update({ tag: nextTag });
             goToArchive(); 
         }
-
         function goToArchive() {
             if (!currentUser) return alert("Please login.");
             switchScene('archive-page');
             const container = document.getElementById('archive-list-container');
             container.innerHTML = '';
-            
             let list = [...flowItems].reverse();
-            if (currentArchiveFilter !== 'all') {
-                list = list.filter(item => (item.tag || '#random') === currentArchiveFilter);
-            }
-
-            if (list.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#999; margin-top:30px;">Nothing found here.</div>';
-                return;
-            }
-
+            if (currentArchiveFilter !== 'all') { list = list.filter(item => (item.tag || '#random') === currentArchiveFilter); }
+            if (list.length === 0) { container.innerHTML = '<div style="text-align:center; color:#999; margin-top:30px;">Nothing found here.</div>'; return; }
             list.forEach(item => {
                 const count = item.completionCount || 0;
                 const tagStr = item.tag || '#random';
                 const isLink = item.content && (item.content.startsWith('http') || item.content.startsWith('www'));
-                
                 const div = document.createElement('div');
                 div.className = `archive-item ${item.completed ? 'done' : ''}`;
-                
-                let contentHtml = item.content ? (isLink ? 
-                    `<a href="${item.content}" target="_blank" class="archive-link-btn">Visit Link ↗</a>` : 
-                    `<div class="archive-item-content">${item.content}</div>`) : '';
-
+                let contentHtml = item.content ? (isLink ? `<a href="${item.content}" target="_blank" class="archive-link-btn">Visit Link ↗</a>` : `<div class="archive-item-content">${item.content}</div>`) : '';
                 div.innerHTML = `
                     <div class="archive-item-title">${item.title || 'Untitled'}</div>
                     ${contentHtml}
@@ -543,7 +530,6 @@
                 container.appendChild(div);
             });
         }
-
         function updateCloudItem(index, updates) {
             const item = flowItems[index];
             if (!item || !item.id) return;
@@ -565,7 +551,6 @@
             btn.style.backgroundColor = 'var(--dot-color)';
             setTimeout(() => { btn.style.backgroundColor = '#E6E6E6'; renderRandomItem(); }, 300);
         }
-
     </script>
 </body>
 </html>
